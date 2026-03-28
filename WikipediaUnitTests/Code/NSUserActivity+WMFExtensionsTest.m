@@ -45,4 +45,28 @@
                           @"https://en.wikipedia.org/w/index.php?search=dog&title=Special:Search&fulltext=1");
 }
 
+- (void)testPlacesURLWithCoordinates {
+    NSURL *url = [NSURL URLWithString:@"wikipedia://places?lat=52.3676&lon=4.9041"];
+    NSUserActivity *activity = [NSUserActivity wmf_activityForWikipediaScheme:url];
+    XCTAssertEqual(activity.wmf_type, WMFUserActivityTypePlaces);
+    XCTAssertEqualObjects(activity.userInfo[@"lat"], @"52.3676");
+    XCTAssertEqualObjects(activity.userInfo[@"lon"], @"4.9041");
+}
+
+- (void)testPlacesURLWithoutCoordinates {
+    NSURL *url = [NSURL URLWithString:@"wikipedia://places"];
+    NSUserActivity *activity = [NSUserActivity wmf_activityForWikipediaScheme:url];
+    XCTAssertEqual(activity.wmf_type, WMFUserActivityTypePlaces);
+    XCTAssertNil(activity.userInfo[@"lat"]);
+    XCTAssertNil(activity.userInfo[@"lon"]);
+}
+
+- (void)testPlacesURLWithPartialCoordinates {
+    NSURL *url = [NSURL URLWithString:@"wikipedia://places?lat=52.3676"];
+    NSUserActivity *activity = [NSUserActivity wmf_activityForWikipediaScheme:url];
+    XCTAssertEqual(activity.wmf_type, WMFUserActivityTypePlaces);
+    XCTAssertNil(activity.userInfo[@"lat"]);
+    XCTAssertNil(activity.userInfo[@"lon"]);
+}
+
 @end
