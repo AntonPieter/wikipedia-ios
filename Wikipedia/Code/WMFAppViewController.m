@@ -1242,10 +1242,10 @@ NSString *const WMFLanguageVariantAlertsLibraryVersion = @"WMFLanguageVariantAle
             [self dismissPresentedViewControllers];
             [self setSelectedIndex:WMFAppTabTypePlaces];
             [self.currentTabNavigationController popToRootViewControllerAnimated:animated];
-            
+
             NSString *lat = activity.userInfo[@"lat"];
             NSString *lon = activity.userInfo[@"lon"];
-            
+
             if (lat && lon) {
                 CLLocationCoordinate2D coordinate =
                     CLLocationCoordinate2DMake(lat.doubleValue, lon.doubleValue);
