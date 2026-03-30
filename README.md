@@ -9,6 +9,34 @@ The official Wikipedia iOS app.
 * **Planning (bugs & features)**: https://phabricator.wikimedia.org/project/view/782/
 * **Team page**: https://www.mediawiki.org/wiki/Wikimedia_Apps/Team/iOS
 
+## Deep Linking: Places Tab with Coordinates
+
+This fork adds support for opening the Places tab directly at a specific location via deep linking. External apps can use the following URL scheme:
+
+```
+wikipedia://places?lat=52.3676&lon=4.9041
+```
+
+### Modified Files
+| File | Change |
+|------|--------|
+| `NSUserActivity+WMFExtensions.m` | Parses `lat` and `lon` query parameters from the deep link URL |
+| `PlacesViewController.swift` | Added `centerMapOnCoordinate(_:)` to center the map on given coordinates |
+| `WMFAppViewController.m` | Routes coordinate-based deep links to the Places tab in map view mode |
+
+The existing `WMFArticleURL`-based Places deep linking remains fully functional as a fallback.
+
+### Unit Tests
+Tests for the coordinate parsing are in `NSUserActivity+WMFExtensionsTest.m` and cover:
+- URL with valid coordinates
+- URL without coordinates (backwards compatibility)
+- URL with partial coordinates (only lat, no lon)
+
+### Companion App
+A separate SwiftUI **Places** app demonstrates this deep linking functionality. See: [Places app repository](https://github.com/AntonPieter/Places)
+
+---
+
 ## Building and Running
 
 Note: Your Xcode version must be at least 16.0.
